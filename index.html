@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Practical Journal — Coding Hub</title>
+<meta name="description" content="24 ready-to-copy JavaScript programs for your IT practical journal — arithmetic, area, loops, strings, dates and more.">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-raised: #12181f;
+    --panel: #161d26;
+    --line: #232b36;
+    --text: #e6edf3;
+    --text-dim: #8b98a5;
+    --accent: #7ee787;
+    --accent-dim: #2ea04366;
+    --amber: #f0b429;
+    --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* Top bar */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(13,17,23,0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.02em; }
+  .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .menu-toggle {
+    display: none;
+    background: var(--panel); border: 1px solid var(--line); color: var(--text);
+    border-radius: 6px; padding: 7px 10px; font-family: var(--mono); font-size: 13px; cursor: pointer;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 56px 20px 40px;
+    max-width: 920px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero .eyebrow {
+    font-family: var(--mono); font-size: 12px; color: var(--accent);
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.05; margin: 0 0 16px; letter-spacing: -0.03em;
+  }
+  .hero p { color: var(--text-dim); font-size: 16px; max-width: 60ch; margin: 0 0 22px; }
+  .hero .tags { display: flex; gap: 8px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; }
+  .hero .tags span {
+    border: 1px solid var(--line); color: var(--text-dim);
+    padding: 5px 10px; border-radius: 20px;
+  }
+
+  /* Layout */
+  .layout { display: grid; grid-template-columns: 260px 1fr; max-width: 1180px; margin: 0 auto; }
+
+  nav.sidebar {
+    position: sticky; top: 57px;
+    align-self: start;
+    height: calc(100vh - 57px);
+    overflow-y: auto;
+    padding: 24px 12px 40px 20px;
+    border-right: 1px solid var(--line);
+  }
+  nav.sidebar .sidebar-label {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-dim); padding: 0 12px 10px;
+  }
+  nav.sidebar ul { list-style: none; margin: 0; padding: 0; }
+  nav.sidebar li a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 12px; border-radius: 6px;
+    font-size: 13.5px; color: var(--text-dim);
+    border-left: 2px solid transparent;
+  }
+  nav.sidebar li a:hover { background: var(--panel); color: var(--text); }
+  nav.sidebar li a.active {
+    background: var(--panel); color: var(--accent); border-left-color: var(--accent);
+  }
+  nav.sidebar .nav-num { font-family: var(--mono); font-size: 11px; color: var(--text-dim); width: 18px; flex-shrink: 0; }
+  nav.sidebar li a.active .nav-num { color: var(--accent); }
+  nav.sidebar .nav-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  main { padding: 32px 24px 80px; min-width: 0; }
+
+  .card {
+    margin-bottom: 28px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    scroll-margin-top: 72px;
+  }
+  .card-head {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-num { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+  .card-head h2 { font-size: 16px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+
+  .code-block { position: relative; }
+  .code-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 14px;
+    background: #0a0e13;
+    border-bottom: 1px solid var(--line);
+  }
+  .code-lang { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .code-actions { display: flex; gap: 8px; }
+  .copy-btn, .run-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: transparent; border: 1px solid var(--line); color: var(--text-dim);
+    padding: 5px 10px; border-radius: 6px; font-family: var(--sans); font-size: 12px;
+    cursor: pointer; transition: all 0.15s ease;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--text-dim); }
+  .copy-btn.copied { color: var(--accent); border-color: var(--accent-dim); }
+  .run-btn { color: var(--amber); border-color: #f0b42944; }
+  .run-btn:hover { background: #f0b4291a; border-color: var(--amber); }
+
+  .explain {
+    padding: 12px 18px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+    background: #10151c;
+    border-bottom: 1px solid var(--line);
+  }
+  .explain-tag {
+    font-family: var(--mono); font-size: 10.5px; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-right: 8px;
+  }
+
+  pre { margin: 0; }
+  pre code.hljs {
+    padding: 16px 18px !important;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    background: transparent !important;
+    overflow-x: auto;
+    display: block;
+  }
+
+  footer {
+    text-align: center; padding: 30px 20px 50px;
+    color: var(--text-dim); font-size: 13px; font-family: var(--mono);
+    border-top: 1px solid var(--line);
+  }
+
+  /* Mobile */
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .menu-toggle { display: inline-block; }
+    nav.sidebar {
+      position: fixed; top: 53px; left: 0; right: 0; bottom: 0;
+      height: auto; max-height: calc(100vh - 53px);
+      background: var(--bg);
+      transform: translateY(-110%);
+      transition: transform 0.25s ease;
+      z-index: 40;
+      border-right: none;
+      padding-top: 16px;
+    }
+    nav.sidebar.open { transform: translateY(0); }
+    main { padding: 24px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span> Coding Hub</div>
+  <button class="menu-toggle" id="menuToggle">☰ Programs</button>
+</div>
+
+<section class="hero">
+  <div class="eyebrow">JS Practical Journal</div>
+  <h1>Learn Together, Code Together, Build Together.</h1>
+  <p>24 ready-to-copy JavaScript programs for your IT practical journal — arithmetic, geometry, loops, strings and dates. Click any program in the list, copy the code, done.</p>
+  <div class="tags"><span>For educational purpose only</span><span>24 programs</span><span>HTML + JS</span></div>
+</section>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-label">Programs</div>
+    <ul>
+      <li><a href="#p1" class="nav-link" data-target="p1"><span class="nav-num">01</span><span class="nav-title">Subtraction of two numbers</span></a></li>
+<li><a href="#p2" class="nav-link" data-target="p2"><span class="nav-num">02</span><span class="nav-title">Addition of two numbers</span></a></li>
+<li><a href="#p3" class="nav-link" data-target="p3"><span class="nav-num">03</span><span class="nav-title">Multiplication of two numbers</span></a></li>
+<li><a href="#p4" class="nav-link" data-target="p4"><span class="nav-num">04</span><span class="nav-title">Division of two numbers</span></a></li>
+<li><a href="#p5" class="nav-link" data-target="p5"><span class="nav-num">05</span><span class="nav-title">Add, subtract, multiply &amp; divide two numbers</span></a></li>
+<li><a href="#p6" class="nav-link" data-target="p6"><span class="nav-num">06</span><span class="nav-title">Area of circle</span></a></li>
+<li><a href="#p7" class="nav-link" data-target="p7"><span class="nav-num">07</span><span class="nav-title">Area of triangle</span></a></li>
+<li><a href="#p8" class="nav-link" data-target="p8"><span class="nav-num">08</span><span class="nav-title">Average of three numbers</span></a></li>
+<li><a href="#p9" class="nav-link" data-target="p9"><span class="nav-num">09</span><span class="nav-title">Perimeter of rectangle</span></a></li>
+<li><a href="#p10" class="nav-link" data-target="p10"><span class="nav-num">10</span><span class="nav-title">Perimeter of trapezium</span></a></li>
+<li><a href="#p11" class="nav-link" data-target="p11"><span class="nav-num">11</span><span class="nav-title">Check odd or even</span></a></li>
+<li><a href="#p12" class="nav-link" data-target="p12"><span class="nav-num">12</span><span class="nav-title">Largest of two numbers</span></a></li>
+<li><a href="#p13" class="nav-link" data-target="p13"><span class="nav-num">13</span><span class="nav-title">Multiplication table of 3</span></a></li>
+<li><a href="#p14" class="nav-link" data-target="p14"><span class="nav-num">14</span><span class="nav-title">Print numbers from 1 to 10</span></a></li>
+<li><a href="#p15" class="nav-link" data-target="p15"><span class="nav-num">15</span><span class="nav-title">Sum of 50 natural numbers</span></a></li>
+<li><a href="#p16" class="nav-link" data-target="p16"><span class="nav-num">16</span><span class="nav-title">Even numbers from 10 to 50</span></a></li>
+<li><a href="#p17" class="nav-link" data-target="p17"><span class="nav-num">17</span><span class="nav-title">Sum of even numbers (button click)</span></a></li>
+<li><a href="#p18" class="nav-link" data-target="p18"><span class="nav-num">18</span><span class="nav-title">Odd numbers from 50 to 100</span></a></li>
+<li><a href="#p19" class="nav-link" data-target="p19"><span class="nav-num">19</span><span class="nav-title">Factorial of 7 (button click)</span></a></li>
+<li><a href="#p20" class="nav-link" data-target="p20"><span class="nav-num">20</span><span class="nav-title">Square of a number</span></a></li>
+<li><a href="#p21" class="nav-link" data-target="p21"><span class="nav-num">21</span><span class="nav-title">Length of a string (button click)</span></a></li>
+<li><a href="#p22" class="nav-link" data-target="p22"><span class="nav-num">22</span><span class="nav-title">Difference between two dates</span></a></li>
+<li><a href="#p23" class="nav-link" data-target="p23"><span class="nav-num">23</span><span class="nav-title">Reverse a string</span></a></li>
+<li><a href="#p24" class="nav-link" data-target="p24"><span class="nav-num">24</span><span class="nav-title">Sum &amp; product of digits (onblur)</span></a></li>
+    </ul>
+  </nav>
+
+  <main>
+    
+<section class="card" id="p1">
+  <div class="card-head">
+    <span class="card-num">01</span>
+    <h2>Subtraction of two numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Do prompt boxes ne pahilyat, don sankhya gheun subtraction (n2-n1) kadhto ani alert madhye dakhavto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p1" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBzdWJ0cmFjdCB0d28gbnVtYmVyczwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBuMSwgbjIsIGRpZmY7Cm4xPXBhcnNlSW50KHByb21wdCgiRW50ZXIgZmlyc3QgbnVtYmVyOiIpKTsKbjI9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBzZWNvbmQgbnVtYmVyOiIpKTsKZGlmZj1uMi1uMTsKYWxlcnQoIlN1YnRyYWN0aW9uIC0gIisgZGlmZik7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p1">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p1">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to subtract two numbers&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n1, n2, diff;
+n1=parseInt(prompt(&quot;Enter first number:&quot;));
+n2=parseInt(prompt(&quot;Enter second number:&quot;));
+diff=n2-n1;
+alert(&quot;Subtraction - &quot;+ diff);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p2">
+  <div class="card-head">
+    <span class="card-num">02</span>
+    <h2>Addition of two numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Do numbers prompt ne ghenar, &#x27;+&#x27; operator vaparun bereej (addition) kadhun alert dakhavto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p2" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBhZGQgdHdvIG51bWJlcnM8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8c2NyaXB0Pgp2YXIgbjEsIG4yLCBzdW07Cm4xPXBhcnNlSW50KHByb21wdCgiRW50ZXIgZmlyc3QgbnVtYmVyOiIpKTsKbjI9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBzZWNvbmQgbnVtYmVyOiIpKTsKc3VtPW4xK24yOwphbGVydCgiU3VtLSAiICsgc3VtKTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPg==">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p2">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p2">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to add two numbers&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n1, n2, sum;
+n1=parseInt(prompt(&quot;Enter first number:&quot;));
+n2=parseInt(prompt(&quot;Enter second number:&quot;));
+sum=n1+n2;
+alert(&quot;Sum- &quot; + sum);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p3">
+  <div class="card-head">
+    <span class="card-num">03</span>
+    <h2>Multiplication of two numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> n1 ani n2 gheun &#x27;*&#x27; ne guna (multiplication) kadhto, result alert box madhye disto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p3" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBtdWx0aXBseSB0d28gbnVtYmVyczwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBuMSwgbjIsIHByb2Q7Cm4xPXBhcnNlSW50KHByb21wdCgiRW50ZXIgZmlyc3QgbnVtYmVyOiIpKTsKbjI9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBzZWNvbmQgbnVtYmVyOiIpKTsKcHJvZD1uMSpuMjsKYWxlcnQoIlByb2R1Y3QgLSAiICsgcHJvZCk7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p3">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p3">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to multiply two numbers&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n1, n2, prod;
+n1=parseInt(prompt(&quot;Enter first number:&quot;));
+n2=parseInt(prompt(&quot;Enter second number:&quot;));
+prod=n1*n2;
+alert(&quot;Product - &quot; + prod);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p4">
+  <div class="card-head">
+    <span class="card-num">04</span>
+    <h2>Division of two numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Don numbers gheun &#x27;/&#x27; ne bhagakar (division) kadhto — dhyan theva, n2 zero disla tar Infinity yeil.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p4" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBkaXZpZGUgdHdvIG51bWJlcnM8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8c2NyaXB0Pgp2YXIgbjEsIG4yLCBxOwpuMT1wYXJzZUludChwcm9tcHQoIkVudGVyIGZpcnN0IG51bWJlcjoiKSk7Cm4yPXBhcnNlSW50KHByb21wdCgiRW50ZXIgc2Vjb25kIG51bWJlcjoiKSk7CnE9bjEvbjI7CmFsZXJ0KCJEaXZpc2lvbiAtICIgKyBxKTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPg==">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p4">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p4">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to divide two numbers&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n1, n2, q;
+n1=parseInt(prompt(&quot;Enter first number:&quot;));
+n2=parseInt(prompt(&quot;Enter second number:&quot;));
+q=n1/n2;
+alert(&quot;Division - &quot; + q);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p5">
+  <div class="card-head">
+    <span class="card-num">05</span>
+    <h2>Add, subtract, multiply &amp; divide two numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Ekach vela don numbers gheun +, -, *, / hi charhi operations karto, document.write ne page var char lines print hotat.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p5" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBhZGQsIHN1YnRyYWN0LCBtdWx0aXBseSwgZGl2aWRlIHR3byBudW1iZXJzPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KPHNjcmlwdD4KdmFyIG4xLCBuMiwgcywgZCwgbSwgcTsKbjE9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBmaXJzdCBudW1iZXI6IikpOwpuMj1wYXJzZUludChwcm9tcHQoIkVudGVyIHNlY29uZCBudW1iZXI6IikpOwpzPW4xK24yOwpkPW4yLW4xOwptPW4xKm4yOwpxPW4xL24yOwpkb2N1bWVudC53cml0ZSgiPGJyPlN1bSAtICIgKyBzKTsKZG9jdW1lbnQud3JpdGUoIjxicj5EaWZmZXJlbmNlIC0gIiArIGQpOwpkb2N1bWVudC53cml0ZSgiPGJyPlByb2R1Y3QgLSAiICsgbSk7CmRvY3VtZW50LndyaXRlKCI8YnI+RGl2aXNpb24gLSAiICsgcSk7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p5">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p5">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to add, subtract, multiply, divide two numbers&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n1, n2, s, d, m, q;
+n1=parseInt(prompt(&quot;Enter first number:&quot;));
+n2=parseInt(prompt(&quot;Enter second number:&quot;));
+s=n1+n2;
+d=n2-n1;
+m=n1*n2;
+q=n1/n2;
+document.write(&quot;&lt;br&gt;Sum - &quot; + s);
+document.write(&quot;&lt;br&gt;Difference - &quot; + d);
+document.write(&quot;&lt;br&gt;Product - &quot; + m);
+document.write(&quot;&lt;br&gt;Division - &quot; + q);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p6">
+  <div class="card-head">
+    <span class="card-num">06</span>
+    <h2>Area of circle</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Radius (r) prompt ne gheto, 3.14 * r * r hya formula ne circle chi area kadhto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p6" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBjYWxjdWxhdGUgYXJlYSBvZiBjaXJjbGU8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8c2NyaXB0Pgp2YXIgciwgYXJlYTsKcj1wYXJzZUludChwcm9tcHQoIkVudGVyIHJhZGl1cyBvZiB0aGUgY2lyY2xlOiIpKTsKYXJlYSA9IDMuMTQgKiByICogcjsKYWxlcnQoIkFyZWEgLSAiICsgYXJlYSk7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p6">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p6">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to calculate area of circle&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var r, area;
+r=parseInt(prompt(&quot;Enter radius of the circle:&quot;));
+area = 3.14 * r * r;
+alert(&quot;Area - &quot; + area);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p7">
+  <div class="card-head">
+    <span class="card-num">07</span>
+    <h2>Area of triangle</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Base ani height gheun 0.5 * b * h ya standard formula ne triangle chi area kadhto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p7" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBjYWxjdWxhdGUgYXJlYSBvZiB0cmlhbmdsZTwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBiLCBoLCBhcmVhOwpiPXBhcnNlSW50KHByb21wdCgiRW50ZXIgYmFzZSBvZiB0aGUgdHJpYW5nbGU6IikpOwpoPXBhcnNlSW50KHByb21wdCgiRW50ZXIgaGVpZ2h0IG9mIHRoZSB0cmlhbmdsZToiKSk7CmFyZWEgPSAwLjUgKiBiICogaDsKYWxlcnQoIkFyZWEgLSAiICsgYXJlYSk7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p7">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p7">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to calculate area of triangle&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var b, h, area;
+b=parseInt(prompt(&quot;Enter base of the triangle:&quot;));
+h=parseInt(prompt(&quot;Enter height of the triangle:&quot;));
+area = 0.5 * b * h;
+alert(&quot;Area - &quot; + area);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p8">
+  <div class="card-head">
+    <span class="card-num">08</span>
+    <h2>Average of three numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Teen numbers gheto, tinnhinchi bereej karun 3 ne bhagun average kadhto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p8" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBjYWxjdWxhdGUgYXZlcmFnZSBvZiB0aHJlZSBudW1iZXJzPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KPHNjcmlwdD4KdmFyIG4xLCBuMiwgbjMsIGF2ZzsKbjE9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBmaXJzdCBudW1iZXI6IikpOwpuMj1wYXJzZUludChwcm9tcHQoIkVudGVyIHNlY29uZCBudW1iZXI6IikpOwpuMz1wYXJzZUludChwcm9tcHQoIkVudGVyIHRoaXJkIG51bWJlcjoiKSk7CmF2Zz0objErbjIrbjMpLzM7CmFsZXJ0KCJBdmVyYWdlIC0gIiArIGF2Zyk7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p8">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p8">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to calculate average of three numbers&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n1, n2, n3, avg;
+n1=parseInt(prompt(&quot;Enter first number:&quot;));
+n2=parseInt(prompt(&quot;Enter second number:&quot;));
+n3=parseInt(prompt(&quot;Enter third number:&quot;));
+avg=(n1+n2+n3)/3;
+alert(&quot;Average - &quot; + avg);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p9">
+  <div class="card-head">
+    <span class="card-num">09</span>
+    <h2>Perimeter of rectangle</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Length ani breadth gheun 2*(l+b) formula ne rectangle cha perimeter kadhto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p9" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBjYWxjdWxhdGUgcGVyaW1ldGVyIG9mIHJlY3RhbmdsZTwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBsZW5ndGgsIGJyZWFkdGgsIHA7Cmxlbmd0aD1wYXJzZUludChwcm9tcHQoIkVudGVyIGxlbmd0aCBvZiB0aGUgcmVjdGFuZ2xlOiIpKTsKYnJlYWR0aD1wYXJzZUludChwcm9tcHQoIkVudGVyIGJyZWFkdGggb2YgdGhlIHJlY3RhbmdsZToiKSk7CnA9MioobGVuZ3RoK2JyZWFkdGgpOwphbGVydCgiUGVyaW1ldGVyLSIgKyBwKTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPg==">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p9">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p9">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to calculate perimeter of rectangle&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var length, breadth, p;
+length=parseInt(prompt(&quot;Enter length of the rectangle:&quot;));
+breadth=parseInt(prompt(&quot;Enter breadth of the rectangle:&quot;));
+p=2*(length+breadth);
+alert(&quot;Perimeter-&quot; + p);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p10">
+  <div class="card-head">
+    <span class="card-num">10</span>
+    <h2>Perimeter of trapezium</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Char baju (sides) gheun sagalya baju ekat jodun trapezium cha perimeter kadhto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p10" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBjYWxjdWxhdGUgcGVyaW1ldGVyIG9mIHRyYXBleml1bTwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBhLCBiLCBjLCBkLCBwOwphPXBhcnNlSW50KHByb21wdCgiRW50ZXIgbGVuZ3RoIG9mIHRoZSBmaXJzdCBzaWRlIG9mIHRyYXBleml1bToiKSk7CmI9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBsZW5ndGggb2YgdGhlIHNlY29uZCBzaWRlIG9mIHRyYXBleml1bToiKSk7CmM9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBsZW5ndGggb2YgdGhlIHRoaXJkIHNpZGUgb2YgdHJhcGV6aXVtOiIpKTsKZD1wYXJzZUludChwcm9tcHQoIkVudGVyIGxlbmd0aCBvZiB0aGUgZm91cnRoIHNpZGUgb2YgdHJhcGV6aXVtOiIpKTsKcD1hK2IrYytkOwphbGVydCgiUGVyaW1ldGVyIC0gIiArIHApOwo8L3NjcmlwdD4KPC9ib2R5Pgo8L2h0bWw+">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p10">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p10">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to calculate perimeter of trapezium&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var a, b, c, d, p;
+a=parseInt(prompt(&quot;Enter length of the first side of trapezium:&quot;));
+b=parseInt(prompt(&quot;Enter length of the second side of trapezium:&quot;));
+c=parseInt(prompt(&quot;Enter length of the third side of trapezium:&quot;));
+d=parseInt(prompt(&quot;Enter length of the fourth side of trapezium:&quot;));
+p=a+b+c+d;
+alert(&quot;Perimeter - &quot; + p);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p11">
+  <div class="card-head">
+    <span class="card-num">11</span>
+    <h2>Check odd or even</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> n % 2 == 0 he condition check karun number even ahe ki odd te thravto (modulus operator vapar).</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p11" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBjaGVjayBudW1iZXIgaXMgb2RkIG9yIGV2ZW48L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8c2NyaXB0Pgp2YXIgbjsKbiA9IHBhcnNlSW50KHByb21wdCgiRW50ZXIgYSBudW1iZXI6IikpOwppZihuICUgMiA9PSAwKQphbGVydCgiTnVtYmVyIGlzIGV2ZW4iKTsKZWxzZQphbGVydCgiTnVtYmVyIGlzIG9kZCIpOwo8L3NjcmlwdD4KPC9ib2R5Pgo8L2h0bWw+">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p11">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p11">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to check number is odd or even&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n;
+n = parseInt(prompt(&quot;Enter a number:&quot;));
+if(n % 2 == 0)
+alert(&quot;Number is even&quot;);
+else
+alert(&quot;Number is odd&quot;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p12">
+  <div class="card-head">
+    <span class="card-num">12</span>
+    <h2>Largest of two numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Don numbers compare karto (if n1 &gt; n2) ani jo motha asel to alert madhye dakhavto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p12" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBmaW5kIGxhcmdlc3QgbnVtYmVyPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KPHNjcmlwdD4KdmFyIG4xLCBuMjsKbjE9cGFyc2VJbnQocHJvbXB0KCJFbnRlciBmaXJzdCBudW1iZXI6IikpOwpuMj1wYXJzZUludChwcm9tcHQoIkVudGVyIHNlY29uZCBudW1iZXI6IikpOwppZihuMT5uMikKYWxlcnQoIkxhcmdlciBudW1iZXIgLSAiICsgbjEpOwplbHNlCmFsZXJ0KCJMYXJnZXIgbnVtYmVyIC0gIiArIG4yKTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPg==">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p12">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p12">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to find largest number&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n1, n2;
+n1=parseInt(prompt(&quot;Enter first number:&quot;));
+n2=parseInt(prompt(&quot;Enter second number:&quot;));
+if(n1&gt;n2)
+alert(&quot;Larger number - &quot; + n1);
+else
+alert(&quot;Larger number - &quot; + n2);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p13">
+  <div class="card-head">
+    <span class="card-num">13</span>
+    <h2>Multiplication table of 3</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> for loop vaparun 1 te 10 paryant i firvto ani 3*i print karun 3 cha multiplication table banavto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p13" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBwcmludCBtdWx0aXBsaWNhdGlvbiB0YWJsZSBvZiAzPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KPHNjcmlwdD4KdmFyIG49MywgaTsKZG9jdW1lbnQud3JpdGUoIk11bHRpcGxpY2F0aW9uIHRhYmxlIG9mIDMiKTsKZm9yKGk9MTtpPD0xMDtpKyspCnsgZG9jdW1lbnQud3JpdGUoIjxicj4iK24rIiAqICIraSsiID0gIituKmkpOyB9Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p13">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p13">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to print multiplication table of 3&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n=3, i;
+document.write(&quot;Multiplication table of 3&quot;);
+for(i=1;i&lt;=10;i++)
+{ document.write(&quot;&lt;br&gt;&quot;+n+&quot; * &quot;+i+&quot; = &quot;+n*i); }
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p14">
+  <div class="card-head">
+    <span class="card-num">14</span>
+    <h2>Print numbers from 1 to 10</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Sadha for loop — i=1 pasun 10 paryant, pratyek value document.write ne page var print hoते.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p14" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBwcmludCBudW1iZXJzIGZyb20gMSB0byAxMDwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBpOwpkb2N1bWVudC53cml0ZSgiTnVtYmVycyBmcm9tIDEgdG8gMTAiKTsKZm9yKGk9MTtpPD0xMDtpKyspIHsKZG9jdW1lbnQud3JpdGUoIjxicj4iK2kpOwp9Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p14">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p14">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to print numbers from 1 to 10&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var i;
+document.write(&quot;Numbers from 1 to 10&quot;);
+for(i=1;i&lt;=10;i++) {
+document.write(&quot;&lt;br&gt;&quot;+i);
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p15">
+  <div class="card-head">
+    <span class="card-num">15</span>
+    <h2>Sum of 50 natural numbers</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> for loop madhye 1 te 50 paryant sagle numbers print hotat ani sobat running total (sum) pan sathvla jato.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p15" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBwcmludCBzdW0gb2YgNTAgbmF0dXJhbCBudW1iZXJzLjwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBpLCBzdW09MDsKZG9jdW1lbnQud3JpdGUoIlN1bSBvZiBudW1iZXJzIGZyb20gMSB0byA1MCIpOwpmb3IoaT0xO2k8PTUwO2krKykKewpkb2N1bWVudC53cml0ZSgiPGJyPiIraSk7CnN1bT1zdW0raTsKfQpkb2N1bWVudC53cml0ZSgiPGJyPlN1bSAtICIrc3VtKTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPg==">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p15">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p15">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to print sum of 50 natural numbers.&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var i, sum=0;
+document.write(&quot;Sum of numbers from 1 to 50&quot;);
+for(i=1;i&lt;=50;i++)
+{
+document.write(&quot;&lt;br&gt;&quot;+i);
+sum=sum+i;
+}
+document.write(&quot;&lt;br&gt;Sum - &quot;+sum);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p16">
+  <div class="card-head">
+    <span class="card-num">16</span>
+    <h2>Even numbers from 10 to 50</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> for loop madhye 10 te 50 paryant firun, jya numbers cha i%2==0 asel (म्हणजे even) tech print hotat.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p16" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBwcmludCBldmVuIG51bWJlcnMgZnJvbSAxMCB0byA1MDwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBpOwpkb2N1bWVudC53cml0ZSgiRXZlbiBOdW1iZXJzIGZyb20gMTAgdG8gNTAiKTsKZm9yKGk9MTA7aTw9NTA7aSsrKQp7CmlmKGklMj09MCkKZG9jdW1lbnQud3JpdGUoIjxicj4iK2kpOwp9Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p16">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p16">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to print even numbers from 10 to 50&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var i;
+document.write(&quot;Even Numbers from 10 to 50&quot;);
+for(i=10;i&lt;=50;i++)
+{
+if(i%2==0)
+document.write(&quot;&lt;br&gt;&quot;+i);
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p17">
+  <div class="card-head">
+    <span class="card-num">17</span>
+    <h2>Sum of even numbers (button click)</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Button la onclick function jodlay — click केल्यावर function 1 te 10 madhle even numbers add karun result id=&#x27;disp&#x27; asलेल्या tag madhye dakhavto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p17" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBwcmludCBzdW0gb2YgZXZlbiBudW1iZXJzLjwvdGl0bGU+CjxzY3JpcHQ+CmZ1bmN0aW9uIGRpc3BsYXlfc3VtKCkgewp2YXIgaSwgc3VtPTA7CmZvcihpPTE7aTw9MTA7aSsrKQp7CmlmKGklMj09MCkKc3VtPXN1bStpOwp9CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJkaXNwIikuaW5uZXJIVE1MID0gIlN1bSBvZiBldmVuIG51bWJlcnMgZnJvbSAxdG8xMCAtICIgKyBzdW07Cn0KPC9zY3JpcHQ+CjwvaGVhZD4KPGJvZHk+CjxpbnB1dCB0eXBlPSJidXR0b24iIG5hbWU9ImRpc3Bfc3VtIiB2YWx1ZT0iRGlzcGxheSBTdW0iCm9uY2xpY2s9ImRpc3BsYXlfc3VtKCkiPgo8YnI+CjxwIGlkPSJkaXNwIj4gPC9wPgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p17">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p17">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to print sum of even numbers.&lt;/title&gt;
+&lt;script&gt;
+function display_sum() {
+var i, sum=0;
+for(i=1;i&lt;=10;i++)
+{
+if(i%2==0)
+sum=sum+i;
+}
+document.getElementById(&quot;disp&quot;).innerHTML = &quot;Sum of even numbers from 1to10 - &quot; + sum;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;input type=&quot;button&quot; name=&quot;disp_sum&quot; value=&quot;Display Sum&quot;
+onclick=&quot;display_sum()&quot;&gt;
+&lt;br&gt;
+&lt;p id=&quot;disp&quot;&gt; &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p18">
+  <div class="card-head">
+    <span class="card-num">18</span>
+    <h2>Odd numbers from 50 to 100</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> for loop 50 te 100 paryant firto, i%2!=0 (odd) asणारे numbers चाळून print hotat.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p18" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbTwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxoMT5KUyBwcm9ncmFtIHRvIHByaW50IG9kZCBudW1iZXJzIGZyb20gNTAgdG8gMTAwPC9oMT4KPHNjcmlwdD4KdmFyIGk7CmRvY3VtZW50LndyaXRlKCJPZGQgTnVtYmVycyBmcm9tIDUwIHRvIDEwMCIpOwpmb3IoaT01MDtpPD0xMDA7aSsrKQp7CmlmKGklMiE9MCkKZG9jdW1lbnQud3JpdGUoIjxicj4iK2kpOwp9Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p18">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p18">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;JS program to print odd numbers from 50 to 100&lt;/h1&gt;
+&lt;script&gt;
+var i;
+document.write(&quot;Odd Numbers from 50 to 100&quot;);
+for(i=50;i&lt;=100;i++)
+{
+if(i%2!=0)
+document.write(&quot;&lt;br&gt;&quot;+i);
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p19">
+  <div class="card-head">
+    <span class="card-num">19</span>
+    <h2>Factorial of 7 (button click)</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Button click zalyavar factorial function run hoto — for loop ulta firvun (n se 1 paryant) sagle numbers guna karto (n!).</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p19" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSAtIGZhY3RvcmlhbCBvZiBudW1iZXI8L3RpdGxlPgo8c2NyaXB0PgpmdW5jdGlvbiBkaXNwbGF5X2ZhY3RvcmlhbChudW0pIHsKdmFyIGksIGYgPSAxOwpmb3IgKGkgPSBudW07IGkgPj0gMTsgaS0tKSB7CmY9ZippOwp9CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJkaXNwIikuaW5uZXJIVE1MID0gIkZhY3RvcmlhbCBvZiA3IC0gIiArIGY7Cn0KPC9zY3JpcHQ+CjwvaGVhZD4KPGJvZHk+CjxoMT5KUyBwcm9ncmFtIHRvIHByaW50IGZhY3RvcmlhbCBvZiBudW1iZXI8L2gxPgo8aW5wdXQgdHlwZT0iYnV0dG9uIiBuYW1lPSJkaXNwX2ZhY3QiIHZhbHVlPSJEaXNwbGF5IEZhY3RvcmlhbCIKb25jbGljaz0iZGlzcGxheV9mYWN0b3JpYWwoNykiPgo8YnI+CjxwIGlkPSJkaXNwIj4gPC9wPgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p19">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p19">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program - factorial of number&lt;/title&gt;
+&lt;script&gt;
+function display_factorial(num) {
+var i, f = 1;
+for (i = num; i &gt;= 1; i--) {
+f=f*i;
+}
+document.getElementById(&quot;disp&quot;).innerHTML = &quot;Factorial of 7 - &quot; + f;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;JS program to print factorial of number&lt;/h1&gt;
+&lt;input type=&quot;button&quot; name=&quot;disp_fact&quot; value=&quot;Display Factorial&quot;
+onclick=&quot;display_factorial(7)&quot;&gt;
+&lt;br&gt;
+&lt;p id=&quot;disp&quot;&gt; &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p20">
+  <div class="card-head">
+    <span class="card-num">20</span>
+    <h2>Square of a number</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Ek number gheun n*n karun tyacha square kadhto ani alert madhye dakhavto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p20" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSB0byBkaXNwbGF5IHNxdWFyZSBvZiBhIG51bWJlcjwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxzY3JpcHQ+CnZhciBuLCByOwpuPXBhcnNlSW50KHByb21wdCgiRW50ZXIgYSBudW1iZXI6IikpOwpyPW4qbjsKYWxlcnQoIlNxdWFyZSAtICIgKyByKTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPg==">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p20">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p20">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program to display square of a number&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+var n, r;
+n=parseInt(prompt(&quot;Enter a number:&quot;));
+r=n*n;
+alert(&quot;Square - &quot; + r);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p21">
+  <div class="card-head">
+    <span class="card-num">21</span>
+    <h2>Length of a string (button click)</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Text box madhye kahi type kelyavar button click karun .length property ne string chi lambi (length) kadhli jaते.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p21" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbTwvdGl0bGU+CjxzY3JpcHQ+CmZ1bmN0aW9uIGRpc3BsYXlfbGVuZ3RoKCkgewp2YXIgc3RyLCBsZW47CnN0ciA9IGZvcm0xLnN0cl9ib3gudmFsdWU7CmxlbiA9IHN0ci5sZW5ndGg7CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJkaXNwIikuaW5uZXJIVE1MID0gIkxlbmd0aCBvZiBTdHJpbmcgLSIgKyBsZW47Cn0KPC9zY3JpcHQ+CjwvaGVhZD4KPGJvZHk+CjxoMT5KUyBwcm9ncmFtIHRvIHByaW50IGxlbmd0aCBvZiBzdHJpbmc8L2gxPgo8Zm9ybSBuYW1lPSJmb3JtMSI+CjxpbnB1dCB0eXBlPSJ0ZXh0IiBuYW1lPSJzdHJfYm94IiBzaXplPTUwPgo8aW5wdXQgdHlwZT0iYnV0dG9uIiBuYW1lPSJkaXNwX3N0cmxlbiIgdmFsdWU9IkRpc3BsYXkgTGVuZ3RoIgpvbmNsaWNrPSJkaXNwbGF5X2xlbmd0aCgpIj4KPC9mb3JtPgo8YnI+CjxwIGlkPSJkaXNwIj4gPC9wPgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p21">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p21">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program&lt;/title&gt;
+&lt;script&gt;
+function display_length() {
+var str, len;
+str = form1.str_box.value;
+len = str.length;
+document.getElementById(&quot;disp&quot;).innerHTML = &quot;Length of String -&quot; + len;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;JS program to print length of string&lt;/h1&gt;
+&lt;form name=&quot;form1&quot;&gt;
+&lt;input type=&quot;text&quot; name=&quot;str_box&quot; size=50&gt;
+&lt;input type=&quot;button&quot; name=&quot;disp_strlen&quot; value=&quot;Display Length&quot;
+onclick=&quot;display_length()&quot;&gt;
+&lt;/form&gt;
+&lt;br&gt;
+&lt;p id=&quot;disp&quot;&gt; &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p22">
+  <div class="card-head">
+    <span class="card-num">22</span>
+    <h2>Difference between two dates</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> Don dates (date input) gheun, Date objects che subtraction karun result milisecond madhun days madhye convert karto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p22" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbTwvdGl0bGU+CjxzY3JpcHQ+CmZ1bmN0aW9uIGRpc3BsYXlfZGlmZigpIHsKdmFyIGQxLCBkMiwgZGlmZjsKZDEgPSBuZXcgRGF0ZShmb3JtMS5kYXRlMS52YWx1ZSk7CmQyID0gbmV3IERhdGUoZm9ybTEuZGF0ZTIudmFsdWUpOwpkaWZmID0gKGQyLWQxKSAvICgxMDAwICogMzYwMCAqIDI0KTsKZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImRpc3AiKS5pbm5lckhUTUwgPSAiRGlmZmVyZW5jZSBvZiBkYXRlcyBpbiBkYXlzICIgKyBkaWZmOwp9Cjwvc2NyaXB0Pgo8L2hlYWQ+Cjxib2R5Pgo8aDE+SlMgcHJvZ3JhbSB0byBkaXNwbGF5IGRpZmZlcmVuY2UgYmV0d2VlbiBkYXRlczwvaDE+Cjxmb3JtIG5hbWU9ImZvcm0xIj4KPGlucHV0IHR5cGU9ImRhdGUiIG5hbWU9ImRhdGUxIj4KPGJyPiA8YnI+CjxpbnB1dCB0eXBlPSJkYXRlIiBuYW1lPSJkYXRlMiI+Cjxicj4gPGJyPgo8aW5wdXQgdHlwZT0iYnV0dG9uIiBuYW1lPSJkaXNwX2RpZmYiIHZhbHVlPSJEaXNwbGF5IERpZmZlcmVuY2UiCm9uY2xpY2s9ImRpc3BsYXlfZGlmZigpIj4KPC9mb3JtPgo8YnI+CjxwIGlkPSJkaXNwIj4gPC9wPgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p22">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p22">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program&lt;/title&gt;
+&lt;script&gt;
+function display_diff() {
+var d1, d2, diff;
+d1 = new Date(form1.date1.value);
+d2 = new Date(form1.date2.value);
+diff = (d2-d1) / (1000 * 3600 * 24);
+document.getElementById(&quot;disp&quot;).innerHTML = &quot;Difference of dates in days &quot; + diff;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;JS program to display difference between dates&lt;/h1&gt;
+&lt;form name=&quot;form1&quot;&gt;
+&lt;input type=&quot;date&quot; name=&quot;date1&quot;&gt;
+&lt;br&gt; &lt;br&gt;
+&lt;input type=&quot;date&quot; name=&quot;date2&quot;&gt;
+&lt;br&gt; &lt;br&gt;
+&lt;input type=&quot;button&quot; name=&quot;disp_diff&quot; value=&quot;Display Difference&quot;
+onclick=&quot;display_diff()&quot;&gt;
+&lt;/form&gt;
+&lt;br&gt;
+&lt;p id=&quot;disp&quot;&gt; &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p23">
+  <div class="card-head">
+    <span class="card-num">23</span>
+    <h2>Reverse a string</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> String cha split(&#x27;&#x27;) array madhye todto, .reverse() ne ulta karto, .join(&#x27;&#x27;) ne परत string banavto — asa string reverse hoto.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p23" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSAtIHJldmVyc2Ugb2Ygc3RyaW5nPC90aXRsZT4KPHNjcmlwdD4KZnVuY3Rpb24gZGlzcGxheV9yZXZlcnNlKHN0cikgewp2YXIgbmV3c3RyOwpuZXdzdHIgPSBzdHIuc3BsaXQoIiIpLnJldmVyc2UoKS5qb2luKCIiKTsKZG9jdW1lbnQud3JpdGUoIlJldmVyc2Ugb2YgU3RyaW5nICIgKyBuZXdzdHIpOwp9Cjwvc2NyaXB0Pgo8L2hlYWQ+Cjxib2R5Pgo8aDE+SlMgcHJvZ3JhbSB0byByZXZlcnNlIGEgc3RyaW5nPC9oMT4KPHNjcmlwdD4KdmFyIHM7CnMgPSBwcm9tcHQoIklucHV0IGEgc3RyaW5nIik7CmRpc3BsYXlfcmV2ZXJzZShzKTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPg==">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p23">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p23">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program - reverse of string&lt;/title&gt;
+&lt;script&gt;
+function display_reverse(str) {
+var newstr;
+newstr = str.split(&quot;&quot;).reverse().join(&quot;&quot;);
+document.write(&quot;Reverse of String &quot; + newstr);
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;JS program to reverse a string&lt;/h1&gt;
+&lt;script&gt;
+var s;
+s = prompt(&quot;Input a string&quot;);
+display_reverse(s);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="card" id="p24">
+  <div class="card-head">
+    <span class="card-num">24</span>
+    <h2>Sum &amp; product of digits (onblur)</h2>
+  </div>
+  <div class="explain"><span class="explain-tag">Kay hoto?</span> 3-digit number madhye Math.floor ani % vaparun pratyek digit vegla kadhla jato, mag tyanchi bereej ani guna kadhla jato — onblur event mhanje text box baherun click केल्यावर function chalte.</div>
+  <div class="code-block">
+    <div class="code-bar">
+      <span class="code-lang">HTML + JS</span>
+      <div class="code-actions">
+        <button class="run-btn" data-code="p24" data-b64="PGh0bWw+CjxoZWFkPgo8dGl0bGU+SlMgcHJvZ3JhbSAtIHN1bSBhbmQgcHJvZHVjdCBvZiBkaWdpdHM8L3RpdGxlPgo8c2NyaXB0PgpmdW5jdGlvbiBjYWxjX2RpZ2l0cygpIHsKdmFyIG4sIGQxLCBkMiwgZDMsIHN1bSwgcHJvZDsKbiA9IHBhcnNlSW50KGRvY3VtZW50LmZvcm0xLm51bV9ib3gudmFsdWUpOwpkMSA9IE1hdGguZmxvb3IobiAvIDEwMCk7CmQyID0gTWF0aC5mbG9vcigobiAvIDEwKSAlIDEwKTsKZDMgPSBuICUgMTA7CnN1bSA9IGQxICsgZDIgKyBkMzsKcHJvZCA9IGQxICogZDIgKiBkMzsKZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImRpc3AiKS5pbm5lckhUTUwgPSAiU3VtIG9mIGRpZ2l0cyAtICIgKyBzdW0gKyAiPGJyPlByb2R1Y3Qgb2YgZGlnaXRzIC0gIiArIHByb2Q7Cn0KPC9zY3JpcHQ+CjwvaGVhZD4KPGJvZHk+CjxoMT5KUyBwcm9ncmFtIHRvIGZpbmQgc3VtIGFuZCBwcm9kdWN0IG9mIGRpZ2l0cyBvZiBhIDMgZGlnaXQgbnVtYmVyPC9oMT4KPGZvcm0gbmFtZT0iZm9ybTEiPgpFbnRlciBhIDMgZGlnaXQgbnVtYmVyOgo8aW5wdXQgdHlwZT0idGV4dCIgbmFtZT0ibnVtX2JveCIgb25ibHVyPSJjYWxjX2RpZ2l0cygpIj4KPC9mb3JtPgo8YnI+CjxwIGlkPSJkaXNwIj4gPC9wPgo8L2JvZHk+CjwvaHRtbD4=">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <span>Run</span>
+        </button>
+        <button class="copy-btn" data-code="p24">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" width="14" height="14" style="display:none"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
+    </div>
+    <pre><code class="language-markup" id="p24">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JS program - sum and product of digits&lt;/title&gt;
+&lt;script&gt;
+function calc_digits() {
+var n, d1, d2, d3, sum, prod;
+n = parseInt(document.form1.num_box.value);
+d1 = Math.floor(n / 100);
+d2 = Math.floor((n / 10) % 10);
+d3 = n % 10;
+sum = d1 + d2 + d3;
+prod = d1 * d2 * d3;
+document.getElementById(&quot;disp&quot;).innerHTML = &quot;Sum of digits - &quot; + sum + &quot;&lt;br&gt;Product of digits - &quot; + prod;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;JS program to find sum and product of digits of a 3 digit number&lt;/h1&gt;
+&lt;form name=&quot;form1&quot;&gt;
+Enter a 3 digit number:
+&lt;input type=&quot;text&quot; name=&quot;num_box&quot; onblur=&quot;calc_digits()&quot;&gt;
+&lt;/form&gt;
+&lt;br&gt;
+&lt;p id=&quot;disp&quot;&gt; &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+  </main>
+</div>
+
+<footer>© 2026 · Aditya Jagtap · __aditya_1109_</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+<script>
+  hljs.highlightAll();
+
+  // Run buttons — decode the base64 source and open it as a live page in a new tab
+  document.querySelectorAll('.run-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const b64 = btn.getAttribute('data-b64');
+      const sourceHtml = decodeURIComponent(escape(atob(b64)));
+      const blob = new Blob([sourceHtml], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    });
+  });
+
+  // Copy buttons
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-code');
+      const codeEl = document.getElementById(id);
+      const text = codeEl.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('copied');
+        btn.querySelector('.icon-copy').style.display = 'none';
+        btn.querySelector('.icon-check').style.display = 'inline';
+        btn.querySelector('.copy-label').textContent = 'Copied';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.querySelector('.icon-copy').style.display = 'inline';
+          btn.querySelector('.icon-check').style.display = 'none';
+          btn.querySelector('.copy-label').textContent = 'Copy';
+        }, 1500);
+      });
+    });
+  });
+
+  // Mobile menu toggle
+  const sidebar = document.getElementById('sidebar');
+  const menuToggle = document.getElementById('menuToggle');
+  menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+  sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', () => sidebar.classList.remove('open')));
+
+  // Scrollspy for active nav link
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = [...document.querySelectorAll('.card')];
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = document.querySelector(`.nav-link[data-target="${entry.target.id}"]`);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  sections.forEach(s => spy.observe(s));
+</script>
+</body>
+</html>
